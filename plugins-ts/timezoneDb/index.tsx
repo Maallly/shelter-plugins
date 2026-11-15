@@ -1,4 +1,10 @@
-import { deleteTimezone, getTimezone, loadDatabaseTimezones, setTimezone, setUserDatabaseTimezone } from "./api";
+import {
+  deleteTimezone,
+  getTimezone,
+  loadDatabaseTimezones,
+  setTimezone,
+  setUserDatabaseTimezone,
+} from "./api";
 import { ButtonRow, TextSetting } from "../ui/settings";
 
 const {
@@ -14,10 +20,15 @@ const SPAN = "timezone-db-profile-span";
 const disposers: (() => void)[] = [];
 
 const fmt = (zone: string) =>
-  new Intl.DateTimeFormat(undefined, { timeZone: zone, hour: "2-digit", minute: "2-digit" });
+  new Intl.DateTimeFormat(undefined, {
+    timeZone: zone,
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
 const offsetHours = (zone: string, now = new Date()) => {
-  const at = (z?: string) => new Date(now.toLocaleString("en-US", { timeZone: z })).getTime();
+  const at = (z?: string) =>
+    new Date(now.toLocaleString("en-US", { timeZone: z })).getTime();
   return Math.round((at(zone) - at()) / 36e5);
 };
 
@@ -30,10 +41,14 @@ const text = (zone: string) => {
 const idOf = (p: any): string | undefined => p?.user?.id ?? p?.userId;
 
 const userIdOf = (el: Element) =>
-  idOf(reactFiberWalker(getFiber(el), (f) => !!idOf(f.pendingProps), true)?.pendingProps);
+  idOf(
+    reactFiberWalker(getFiber(el), (f) => !!idOf(f.pendingProps), true)
+      ?.pendingProps,
+  );
 
 const localZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
-const myId = (): string | undefined => storesFlat.UserStore?.getCurrentUser?.()?.id;
+const myId = (): string | undefined =>
+  storesFlat.UserStore?.getCurrentUser?.()?.id;
 
 export const settings = () => {
   const [busy, setBusy] = createSignal(false);
@@ -54,7 +69,11 @@ export const settings = () => {
 
   return (
     <>
-      <TextSetting key="databaseUrl" label="Database URL" placeholder="https://timezone.creations.works" />
+      <TextSetting
+        key="databaseUrl"
+        label="Database URL"
+        placeholder="https://timezone.creations.works"
+      />
       <TextSetting
         key="myTimezone"
         label="Your timezone"
@@ -63,18 +82,44 @@ export const settings = () => {
         suggestions={Intl.supportedValuesOf("timeZone")}
       />
       <ButtonRow>
-        <Button grow disabled={busy()} onClick={() => run(() => setTimezone(zone()), zone())}>Save</Button>
-        <Button grow disabled={busy()} color={ButtonColors.RED} onClick={() => run(deleteTimezone, null)}>Delete</Button>
-        <Button grow disabled={busy()} color={ButtonColors.SECONDARY} onClick={() => loadDatabaseTimezones()}>Refresh</Button>
+        <Button
+          grow
+          disabled={busy()}
+          onClick={() => run(() => setTimezone(zone()), zone())}
+        >
+          Save
+        </Button>
+        <Button
+          grow
+          disabled={busy()}
+          color={ButtonColors.RED}
+          onClick={() => run(deleteTimezone, null)}
+        >
+          Delete
+        </Button>
+        <Button
+          grow
+          disabled={busy()}
+          color={ButtonColors.SECONDARY}
+          onClick={() => loadDatabaseTimezones()}
+        >
+          Refresh
+        </Button>
       </ButtonRow>
     </>
   );
 };
 
 export function onLoad() {
-  loadDatabaseTimezones().then((ok) => log(ok ? "timezones loaded" : "timezone list fetch failed", ok ? "log" : "warn"));
+  loadDatabaseTimezones().then((ok) =>
+    log(
+      ok ? "timezones loaded" : "timezone list fetch failed",
+      ok ? "log" : "warn",
+    ),
+  );
 
-  disposers.push(injectCss(`
+  disposers.push(
+    injectCss(`
 .${SPAN} {
   position: absolute;
   right: 0;
@@ -86,7 +131,8 @@ export function onLoad() {
   font-size: .75rem;
   color: var(--text-default);
 }
-`));
+`),
+  );
 
   disposers.push(
     observeDom('[class*="banner_"]', (el) => {
@@ -102,11 +148,29 @@ export function onLoad() {
       span.dataset.zone = zone;
       span.textContent = text(zone);
       el.appendChild(span);
-    })
+    }),
+
+    observeDom('time[id^="message-timestamp-"]', (el) => {
+      const time = el as HTMLTimeElement;
+      if (time.dataset.timezoneDb) return;
+      time.dataset.timezoneDb = "true";
+
+      const authorId = reactFiberWalker(
+        getFiber(time),
+        (f) => !!f.pendingProps?.message?.author?.id,
+        true,
+      )?.pendingProps.message.author.id;
+      const zone = authorId && getTimezone(authorId);
+
+      if (!zone || offsetHours(zone) === 0) return;
+
+      time.append(` (${fmt(zone).format(new Date(time.dateTime))} their time)`);
+    }),
   );
 
   const tick = setInterval(() => {
-    for (const s of document.querySelectorAll<HTMLElement>(`.${SPAN}`)) s.textContent = text(s.dataset.zone!);
+    for (const s of document.querySelectorAll<HTMLElement>(`.${SPAN}`))
+      s.textContent = text(s.dataset.zone!);
   }, 10_000);
   disposers.push(() => clearInterval(tick));
 }
