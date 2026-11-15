@@ -11,6 +11,7 @@ Install any plugin in shelter with `https://Maallly.github.io/shelter-plugins/<p
 | [Decor](#decor) | Mally | Bring decor to shelter |
 | [Global badges](#global-badges) | Mally | Bring other client's badges to shelter |
 | [Mention Avatars](#mention-avatars) | Equicord/Vencord, ported by Mally | Add the mentioned user's avatar next to the mention |
+| [Message logger](#message-logger) | Mally | Logs messages edit/deletion |
 | [No pin prompt](#no-pin-prompt) | Equicord/Vencord, ported by Mally | Ignores the pin prompt and auto pins it |
 | [Polish Wording](#polish-wording) | Equicord, ported by Mally | Tweaks your messages to make them look nicer and have better grammar |
 | [Quick CSS](#quick-css) | Mally | Modify css like quickcss on Vencord! Powered by monaco-editor |
@@ -41,6 +42,13 @@ Install any plugin in shelter with `https://Maallly.github.io/shelter-plugins/<p
 - Add the mentioned user's avatar next to the mention
 - Install: `https://Maallly.github.io/shelter-plugins/mentionAvatars/`
 ![Mention Avatars](assets/mentionAvatars.png)
+
+## Message logger
+
+- Author: Mally
+- Add the Logs messages edit/deletion
+- Install: `https://Maallly.github.io/shelter-plugins/messageLogger/`
+![Message logger](assets/messageLogger.png)
 
 ## No pin prompt
 

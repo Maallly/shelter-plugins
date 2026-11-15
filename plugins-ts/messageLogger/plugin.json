@@ -1,5 +1,6 @@
 {
   "name": "Message logger",
   "author" : "Mally",
-  "description" : "Logs messages"
+  "description" : "Add the Logs messages edit/deletion",
+  "preview": "messageLogger.png"
 }
