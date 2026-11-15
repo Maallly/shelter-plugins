@@ -1,0 +1,27 @@
+{{>default_scripts}}
+<script>
+    for (const el of document.getElementsByClassName("plugin-link-placeholder"))
+        el.innerText = el.innerText.replace(/([^:])\/{2,}/g, "$1/");
+</script>
+<script>
+    document.addEventListener("click", async (e) => {
+        const btn = e.target.closest("[data-copy]");
+        if (!btn) return;
+        const url = btn.parentElement.querySelector(".plugin-url");
+
+        try {
+            await navigator.clipboard.writeText(url.innerText.trim());
+            btn.textContent = "Copied";
+        } catch {
+            getSelection().selectAllChildren(url);
+            btn.textContent = "Press Ctrl+C";
+        }
+        btn.dataset.copied = "";
+
+        clearTimeout(btn.resetTimer);
+        btn.resetTimer = setTimeout(() => {
+            btn.textContent = "Copy";
+            delete btn.dataset.copied;
+        }, 1500);
+    });
+</script>

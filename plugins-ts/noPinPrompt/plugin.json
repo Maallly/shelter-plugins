@@ -1,5 +1,6 @@
 {
   "name": "No pin prompt",
   "author": "Made by Equicord/Vencord, Ported by Mally",
-  "description": "Ignores the pin prompt and auto pin it"
+  "description": "Ignores the pin prompt and auto pin it",
+  "preview": "noPinModal.gif"
 }

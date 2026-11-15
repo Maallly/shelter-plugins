@@ -1,5 +1,6 @@
 {
     "name": "Quick CSS",
     "author": "Mally",
-    "description": "Modify css like quickcss on Vencord! Powered by monaco-editor"
+    "description": "Modify css like quickcss on Vencord! Powered by monaco-editor",
+    "preview": "quickCss.png"
 }

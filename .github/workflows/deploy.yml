@@ -35,7 +35,7 @@ jobs:
 
       - run: pnpm lune ci
 
-      - run: pnpm lune ssg ci
+      - run: pnpm ssg
 
       - uses: actions/upload-pages-artifact@v3
         with:

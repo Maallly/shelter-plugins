@@ -1,5 +1,6 @@
 {
   "name": "Mention Avatars",
   "author": "Made by Equicord/Vencord, Ported by Mally",
-  "description": "Add the mentioned user's avatar next to the mention"
+  "description": "Add the mentioned user's avatar next to the mention",
+  "preview": "mentionAvatars.png"
 }

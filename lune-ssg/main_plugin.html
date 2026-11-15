@@ -1,0 +1,13 @@
+<div class="autosize plugin-main">
+  {{#if has_index}}
+  <p class="back"><a href="..">{{>back_icon}} All plugins</a></p>
+  {{/if}} {{>pre_plugin}}
+  <div class="plugin-desc">{{>description}}</div>
+  <div class="plugin-link">
+    <span class="plugin-url">{{>resolved_plugin_url}}</span>
+    <button type="button" class="copy" data-copy>Copy</button>
+  </div>
+  {{>post_plugin}}
+  {{#if preview}}<img class="plugin-preview" src="../assets/{{preview}}" alt="{{name}} preview">{{/if}}
+  {{>footer}}
+</div>

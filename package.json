@@ -15,6 +15,7 @@
     "build:ts": "node scripts/build-plugin-ts.mjs",
     "dev": "node scripts/build-plugin-ts.mjs --watch",
     "build": "node scripts/build-plugin-ts.mjs && lune ci",
-    "lune:preview": "pnpm build && pnpm lune ssg ci ."
+    "ssg": "lune ssg ci . && node -e \"require('fs').cpSync('assets', 'dist/assets', { recursive: true })\"",
+    "lune:preview": "pnpm build && pnpm ssg"
   }
 }

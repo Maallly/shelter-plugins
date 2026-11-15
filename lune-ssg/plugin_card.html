@@ -1,0 +1,9 @@
+<div class="plugin">
+  <a class="plugin-title" href="{{url}}">{{name}}</a>
+  <div class="plugin-desc">{{>description}}</div>
+  {{#if preview}}<img class="plugin-preview" src="assets/{{preview}}" alt="{{name}} preview" loading="lazy">{{/if}}
+  <div class="plugin-link">
+    <span class="plugin-url">{{>resolved_plugin_url}}</span>
+    <button type="button" class="copy" data-copy>Copy</button>
+  </div>
+</div>
