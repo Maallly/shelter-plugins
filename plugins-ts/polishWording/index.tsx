@@ -1,3 +1,4 @@
+import { settingsFrom } from "../ui/settings";
 
 
 const {
@@ -7,11 +8,6 @@ const {
     http: {
         intercept
     },
-    ui: {
-        SwitchItem,
-        TextBox, Text,
-        Divider
-    }
 } = shelter
 
 intercept("post", /\/channels\/\d+\/messages/, (req, send) => {
@@ -19,54 +15,13 @@ intercept("post", /\/channels\/\d+\/messages/, (req, send) => {
     return send(req)
 })
 
-export const settings = () => (
-    <>
-        <SwitchItem
-            value={store.fixApostrophes}
-            onChange={(v) => {
-                store.fixApostrophes = v
-            }}
-        >
-            Fix Apostrophes
-        </SwitchItem>
-        <SwitchItem
-            value={store.expandContractions}
-            onChange={(v) => {
-                store.expandContractions = v
-            }}
-        >
-            Expand Contractions
-        </SwitchItem>
-        <SwitchItem
-            value={store.fixCapitalization}
-            onChange={(v) => {
-                store.fixCapitalization = v
-            }}
-        >
-            Fix Capitalization
-        </SwitchItem>
-        <SwitchItem
-            value={store.fixPunctuation}
-            onChange={(v) => {
-                store.fixPunctuation = v
-            }}
-        >
-            Punctate sentences
-        </SwitchItem>
-        <div style={{ display: "flex", "align-items": "center", gap: "8px" }}>
-            <Text style={{ "white-space": "nowrap", "flex-shrink": 0 }}>
-                Punctuation Frequency
-            </Text>
-            <TextBox
-                style={{ flex: 1 }}
-                value={store.fixPunctuationFrequency}
-                onInput={(v) => { store.fixPunctuationFrequency = v }}
-            />
-        </div>
-
-        <Divider />
-    </>
-)
+export const settings = settingsFrom([
+    { type: "switch", key: "fixApostrophes", label: "Fix Apostrophes" },
+    { type: "switch", key: "expandContractions", label: "Expand Contractions" },
+    { type: "switch", key: "fixCapitalization", label: "Fix Capitalization" },
+    { type: "switch", key: "fixPunctuation", label: "Punctate sentences" },
+    { type: "number", key: "fixPunctuationFrequency", label: "Punctuation Frequency", note: "Chance in percent (0-100)" },
+])
 
 function textProcessing(input: string) {
     // Quick disable, without having to reload the client
