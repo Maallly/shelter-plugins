@@ -52,4 +52,8 @@ for (const name of readdirSync(SRC, { withFileTypes: true }).filter((d) => d.isD
 
 console.log("ts -> plugins done!");
 
+if (devPlugin && !existsSync(join(OUT, devPlugin))) {
+	console.error(`${devPlugin} was not built (missing index.ts(x)?)`);
+	process.exit(1);
+}
 if (devPlugin) spawn("lune dev", { cwd: join(OUT, devPlugin), stdio: "inherit", shell: true });
