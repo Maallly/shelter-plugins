@@ -11,7 +11,9 @@ const jump = (m: { guildId?: string; channelId: string; id: string }) => (
 export const settings = () => (
   <>
     <Header tag={HeaderTags.H3}>Deleted messages ({getLog().length})</Header>
-    <Button onClick={clearLog}>Clear deleted</Button>
+    <Button grow onClick={clearLog}>
+      Clear deleted
+    </Button>
     <br />
     {getLog().map((m) => (
       <div style={{ "margin-bottom": "8px" }}>
@@ -35,7 +37,9 @@ export const settings = () => (
     <Header tag={HeaderTags.H3}>
       Edited messages ({Object.keys(getEdits()).length})
     </Header>
-    <Button onClick={clearEdits}>Clear edits</Button>
+    <Button grow onClick={clearEdits}>
+      Clear edits
+    </Button>
     <br />
     {Object.values(getEdits())
       .reverse()
