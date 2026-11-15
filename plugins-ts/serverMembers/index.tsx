@@ -150,17 +150,18 @@ export function onLoad() {
       widget.appendChild(seperator);
 
       // VCs
+      if (voice > 0) {
+        const voiceContainer = document.createElement("div");
+        voiceContainer.classList.add("shelter-membercount-container");
 
-      const voiceContainer = document.createElement("div");
-      voiceContainer.classList.add("shelter-membercount-container");
+        const voiceText = document.createElement("span");
+        voiceText.textContent = voice.toLocaleString();
+        voiceText.classList.add("shelter-membercount-voice");
 
-      const voiceText = document.createElement("span");
-      voiceText.textContent = voice.toLocaleString();
-      voiceText.classList.add("shelter-membercount-voice");
-
-      voiceContainer.append(Voice() as Node, voiceText);
-      widget.appendChild(voiceContainer);
-      widget.appendChild(seperator);
+        voiceContainer.append(Voice() as Node, voiceText);
+        widget.appendChild(voiceContainer);
+        widget.appendChild(seperator);
+      }
 
       el.prepend(widget);
     }),
