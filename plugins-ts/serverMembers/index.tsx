@@ -11,6 +11,25 @@ const {
 
 const disposers: (() => void)[] = [];
 
+const counts = (channelId?: string) => {
+  const guildId = storesFlat.SelectedGuildStore?.getGuildId?.();
+
+  const groups: { id: string; count: number }[] | undefined =
+    storesFlat.ChannelMemberStore?.getProps?.(guildId, channelId)?.groups;
+
+  const online = groups?.length
+    ? groups.reduce((n, g) => (g.id === "offline" ? n : n + g.count), 0)
+    : (storesFlat.GuildMemberCountStore?.getOnlineCount?.(guildId) ?? 0);
+
+  return {
+    online,
+    members: storesFlat.GuildMemberCountStore?.getMemberCount?.(guildId) ?? 0,
+    voice: Object.keys(
+      storesFlat.VoiceStateStore?.getVoiceStates?.(guildId) ?? {},
+    ).length,
+  };
+};
+
 export function onLoad() {
   // these are pulled from the original plugin
   disposers.push(
@@ -74,21 +93,37 @@ export function onLoad() {
 
   disposers.push(
     observeDom('[role="list"][data-list-id^="members-"]', (el) => {
-      if (el.classList.contains("shelter-membercount-modified")) return;
-      el.classList.add("shelter-membercount-modified");
+      const { online, members, voice } = counts(
+        el.dataset.listId?.slice("members-".length),
+      );
+
+      // react nuke the list's className on scroll, so check for our widget instead of a class marker
+      const existing = el.querySelector(":scope > .shelter-membercount-widget");
+
+      if (existing) {
+        const set = (cls: string, n: number) => {
+          const span = existing.querySelector(cls);
+
+          if (span && span.textContent !== n.toLocaleString())
+            span.textContent = n.toLocaleString();
+        };
+
+        set(".shelter-membercount-online", online);
+        set(".shelter-membercount-total", members);
+        set(".shelter-membercount-voice", voice);
+
+        return;
+      }
 
       const widget = document.createElement("div");
       widget.classList.add("shelter-membercount-member-list");
       widget.classList.add("shelter-membercount-widget");
 
-      const currentGuild = storesFlat.SelectedGuildStore?.getGuildId?.();
       // seperator i think
       const seperator = document.createElement("span");
       seperator.style.display = "none";
 
       // online
-      const online =
-        storesFlat.GuildMemberCountStore?.getOnlineCount?.(currentGuild) ?? 0;
 
       const onlineContainer = document.createElement("div");
       onlineContainer.classList.add("shelter-membercount-container");
@@ -102,8 +137,6 @@ export function onLoad() {
       widget.appendChild(seperator);
 
       // members
-      const members =
-        storesFlat.GuildMemberCountStore?.getMemberCount?.(currentGuild) ?? 0;
 
       const membersContainer = document.createElement("div");
       membersContainer.classList.add("shelter-membercount-container");
@@ -117,9 +150,6 @@ export function onLoad() {
       widget.appendChild(seperator);
 
       // VCs
-      const voice = Object.keys(
-        storesFlat.VoiceStateStore?.getVoiceStates?.(currentGuild) ?? {},
-      ).length;
 
       const voiceContainer = document.createElement("div");
       voiceContainer.classList.add("shelter-membercount-container");
@@ -141,6 +171,4 @@ export function onUnload() {
   for (const d of disposers.splice(0)) d();
   for (const el of document.querySelectorAll(".shelter-membercount-widget"))
     el.remove();
-  for (const el of document.querySelectorAll(".shelter-membercount-modified"))
-    el.classList.remove("shelter-membercount-modified");
 }
