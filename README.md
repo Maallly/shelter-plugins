@@ -14,6 +14,7 @@ Install any plugin in shelter with `https://Maallly.github.io/shelter-plugins/<p
 | [No pin prompt](#no-pin-prompt) | Equicord/Vencord, ported by Mally | Ignores the pin prompt and auto pins it |
 | [Polish Wording](#polish-wording) | Equicord, ported by Mally | Tweaks your messages to make them look nicer and have better grammar |
 | [Quick CSS](#quick-css) | Mally | Modify css like quickcss on Vencord! Powered by monaco-editor |
+| [Server member count](#server-member-count) | Vencord, Ported by Mally | A little widget telling you a bit of the server's member information |
 | [Show username](#show-username) | ioj4 & Mally | Show username right next to display name |
 | [TimezoneDB](#timezonedb) | Mally | Timezones for shelter |
 | [Trust worthy](#trust-worthy) | SpikeHD & Mally | Trust files, links |
@@ -64,6 +65,14 @@ Install any plugin in shelter with `https://Maallly.github.io/shelter-plugins/<p
 - Install: `https://Maallly.github.io/shelter-plugins/quickCss/`
 
 ![Quick CSS](assets/quickCss.png)
+
+## Server member count
+
+- Author: Vencord, Ported by Mally
+- A little widget telling you a bit of the server's member information
+- Install: `https://Maallly.github.io/shelter-plugins/serverMembers/`
+
+![Server member count](assets/serverMembersCount.png)
 
 ## Show username
 
