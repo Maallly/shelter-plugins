@@ -6,6 +6,8 @@ const {
 
 const MAX_LOG = 500;
 
+export const plain = <T>(x: T): T => (x === undefined ? x : JSON.parse(JSON.stringify(x)));
+
 export type Logged = {
   id: string;
   channelId: string;
@@ -110,7 +112,7 @@ export function preserve(channelId: string, id: string, guildId?: string) {
 
   let raw;
   try {
-    raw = toRaw(msg, channelId, guildId);
+    raw = plain(toRaw(msg, channelId, guildId));
   } catch (e) {
     log(`messageLogger: couldn't snapshot ${id}: ${e}`, "error");
   }

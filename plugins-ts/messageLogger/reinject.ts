@@ -1,4 +1,4 @@
-import { getLog } from "./log";
+import { getLog, plain } from "./log";
 
 const cmp = (a: string, b: string) =>
   BigInt(a) > BigInt(b) ? -1 : BigInt(a) < BigInt(b) ? 1 : 0;
@@ -18,8 +18,9 @@ export function reinject(payload: any) {
     return msgs.length ? id > min && (id < max || latest) : latest;
   });
 
+  // hand Discord plain copies, not live store proxies
   if (add.length)
-    payload.messages = [...msgs, ...add.map((m) => m.raw)].sort((a, b) =>
+    payload.messages = [...msgs, ...add.map((m) => plain(m.raw))].sort((a, b) =>
       cmp(a.id, b.id),
     );
 }
