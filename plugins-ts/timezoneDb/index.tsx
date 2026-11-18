@@ -154,6 +154,7 @@ export function onLoad() {
       const time = el as HTMLTimeElement;
       if (time.dataset.timezoneDb) return;
       time.dataset.timezoneDb = "true";
+      if (time.closest('[class*="timestampVisibleOnHover"]')) return;
 
       const authorId = reactFiberWalker(
         getFiber(time),
