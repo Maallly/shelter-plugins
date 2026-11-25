@@ -12,14 +12,15 @@ const BOOSTERS_QUERY =
   '[id^="message-content-"] [class*="nameContainer_"] > [class*="username_"]';
 const QUERY = `${USERNAME_QUERY}, ${BOOSTERS_QUERY}`;
 
-function getNick(message: any): string | undefined {
+function getGuildNick(message: any): string | undefined {
   const guildId = (storesFlat.ChannelStore as any).getChannel(
     message.channel_id,
   )?.guild_id;
-  const nick =
-    guildId &&
-    (storesFlat.GuildMemberStore as any).getNick(guildId, message.author.id);
-  return nick ?? message.author.globalName ?? undefined;
+  if (!guildId) return;
+  return (
+    (storesFlat.GuildMemberStore as any).getNick(guildId, message.author.id) ??
+    undefined
+  );
 }
 
 export function forceAddUsernames() {
@@ -34,8 +35,8 @@ function addUsername(e: Element, overwrite = false) {
   const props = reactFiberWalker(getFiber(e), "message", true)?.pendingProps;
   if (!props?.message?.author) return;
 
-  const nick = props.author?.nick ?? getNick(props.message);
-  const { username } = props.message.author;
+  const nick = getGuildNick(props.message);
+  const { username, globalName } = props.message.author;
 
   // ?? 😭😭
   // const style =
@@ -47,15 +48,18 @@ function addUsername(e: Element, overwrite = false) {
   //   </span>
   // );
 
-  // no nickname: Discord already shows the username, leave it alone
-  if (!nick || nick === username) return;
+  const usernameText = nick
+    ? `@${username} [${globalName ?? username}]`
+    : `@${username}`;
+
+  const shownName = nick ?? globalName ?? "";
 
   const usernameElement = document.createElement("span");
   usernameElement.classList.add("show-username-shelter");
   usernameElement.classList.add("ioj4-su");
-  usernameElement.textContent = `@${username}`;
+  usernameElement.textContent = usernameText;
 
-  e.textContent = store.usernamesOnly ? `` : ` ${nick}`;
+  e.textContent = store.usernamesOnly || !shownName ? `` : ` ${shownName}`;
   e.prepend(usernameElement);
 }
 
@@ -69,7 +73,7 @@ export function onLoad() {
       border-radius: 4px;
       padding: 0 4px;
       margin-right: 4px;
-      opacity: 0.6;
+      opacity: 0.3;
       background: var(--background-base-lowest);
     }
     `);
