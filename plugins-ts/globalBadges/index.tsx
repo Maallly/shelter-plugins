@@ -1,4 +1,5 @@
 import { loadBadges } from "./api";
+import { MODFIED_CLASS } from "../constants";
 
 const { http: { intercept }, plugin: { store }, observeDom, ui: { injectCss }, util: { log } } = shelter;
 
@@ -81,8 +82,8 @@ export function onLoad() {
 
     disposers.push(
         observeDom('div[aria-label="User Badges"] > a[role="link"]', (anchor) => {
-            if (anchor.dataset.customProcessed) return;
-            anchor.dataset.customProcessed = "true";
+            if (anchor.classList.contains(MODFIED_CLASS)) return;
+            anchor.classList.add(MODFIED_CLASS);
 
             const img = anchor.querySelector('img');
             if (!img) return;

@@ -1,3 +1,5 @@
+import { MODFIED_CLASS } from "../constants";
+
 const {
   observeDom,
   ui: { injectCss },
@@ -77,14 +79,14 @@ export function onLoad() {
     observeDom(
       '[class*="clanTag_"], [class*="chipletContainerInner_"][class*="guildTagPill_"], [class*="chipletContainerInner_"][class*="clanTagChiplet_"]',
       (el) => {
-        if (el.classList.contains("shelter-modified")) return;
-        el.classList.add("shelter-modified");
+        if (el.classList.contains(MODFIED_CLASS)) return;
+        el.classList.add(MODFIED_CLASS);
         el.classList.add("shelter-mplg-better-server-tags-container");
 
         const tagText = el.querySelector("[class*='tagText']");
         if (tagText) {
           tagText.classList.add("shelter-mplg-better-server-tags-text");
-          tagText.classList.add(".shelter-mplg-better-server-tags-trim");
+          tagText.classList.add("shelter-mplg-better-server-tags-trim");
         }
       },
     ),

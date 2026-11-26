@@ -1,3 +1,5 @@
+import { MODFIED_CLASS } from "../constants";
+
 const {
     observeDom,
     ui: { injectCss },
@@ -34,7 +36,8 @@ export function onLoad() {
 
     disposers.push(
         observeDom(MENTION_SELECTORS, (span) => {
-            span.dataset.mentionStyled = "true";
+            if (span.classList.contains(MODFIED_CLASS)) return;
+            span.classList.add(MODFIED_CLASS);
 
 
             const fiber = getFiber(span);

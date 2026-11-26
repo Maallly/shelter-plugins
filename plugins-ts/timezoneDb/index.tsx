@@ -1,3 +1,4 @@
+import { MODFIED_CLASS } from "../constants";
 import {
   deleteTimezone,
   getTimezone,
@@ -136,8 +137,8 @@ export function onLoad() {
 
   disposers.push(
     observeDom('[class*="banner_"]', (el) => {
-      if (el.dataset.timezoneDb) return;
-      el.dataset.timezoneDb = "true";
+      if (el.classList.contains(MODFIED_CLASS)) return;
+      el.classList.add(MODFIED_CLASS);
 
       const userId = userIdOf(el);
       const zone = userId && getTimezone(userId);
@@ -152,8 +153,8 @@ export function onLoad() {
 
     observeDom('time[id^="message-timestamp-"]', (el) => {
       const time = el as HTMLTimeElement;
-      if (time.dataset.timezoneDb) return;
-      time.dataset.timezoneDb = "true";
+      if (time.classList.contains(MODFIED_CLASS)) return;
+      time.classList.add(MODFIED_CLASS);
       if (time.closest('[class*="timestampVisibleOnHover"]')) return;
 
       const authorId = reactFiberWalker(
