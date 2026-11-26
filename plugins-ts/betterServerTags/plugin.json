@@ -1,5 +1,6 @@
 {
   "name" : "Better server tags",
   "author" : "Echo & Mally",
-  "description" : "Make server tags collapsible"
+  "description" : "Make server tags collapsible",
+  "preview": "betterServerTags.gif"
 }

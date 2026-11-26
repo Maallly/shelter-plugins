@@ -1,5 +1,6 @@
 {
   "name": "Navigator",
   "author": "Equi/Vencord & Mally",
-  "description": "Bring the navigator (by building it from scratch) to shelter"
+  "description": "Bring the navigator (by building it from scratch) to shelter",
+  "preview": "navigator.gif"
 }
